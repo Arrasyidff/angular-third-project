@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="row">
+        <h1>Add New Order</h1>
+        <form [formGroup]="updateOrderForm">
+            <mat-form-field>
+                <mat-label>Customer name *</mat-label>
+                <input matInput formControlName="customerName" type="text">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Email *</mat-label>
+                <input matInput formControlName="email" type="text">
+            </mat-form-field>
+            <input type="text" formControlName="totalPrice" [ngModel]="countTotalPrice(items.controls)" hidden>
+            <div formArrayName="items">
+                <div *ngFor="let store of items.controls; let i = index">
+                    <div [formGroup]="store" class="form-array">
+                        <div class="input-array">
+                            <!-- <button (click)="testingClick()">Testing Button</button> -->
+                            <mat-form-field>
+                                <mat-label>Select category *</mat-label>
+                                <mat-select formControlName="category">
+                                    <mat-option *ngFor="let category of categories" [value]="category">{{category}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div>
+                                <mat-form-field *ngIf="store.value.category === ''">
+                                    <mat-label>Select item *</mat-label>
+                                    <mat-select disabled>
+                                        <mat-option value=""></mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="store.value.category === 'CPU'">
+                                    <mat-label>Select item *</mat-label>
+                                    <mat-select formControlName="name">
+                                        <mat-option *ngFor="let item of cpuList"
+                                        [value]="item.name">{{item.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="store.value.category === 'Motherboard'">
+                                    <mat-label>Select item *</mat-label>
+                                    <mat-select formControlName="name">
+                                        <mat-option *ngFor="let item of motherBoardList" [value]="item.name">
+                                            {{item.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="store.value.category === 'Video Card'">
+                                    <mat-label>Select item *</mat-label>
+                                    <mat-select formControlName="name">
+                                        <mat-option *ngFor="let item of videoCardList"  [value]="item.name">
+                                            {{item.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="store.value.category === 'Memory'">
+                                    <mat-label>Select item *</mat-label>
+                                    <mat-select formControlName="name">
+                                        <mat-option *ngFor="let item of memoryList" [value]="item.name">{{item.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div>
+                                <h1>{{store.value.name}}</h1>
+                                <mat-form-field *ngIf="store.value.name === ''">
+                                    <span matPrefix>$ &nbsp;</span>
+                                    <input type="number" value="0" matInput readonly>
+                                </mat-form-field>
+                                <div *ngFor="let item of cpuList">
+                                    <mat-form-field *ngIf="store.value.name === item.name">
+                                        <span matPrefix>$ &nbsp;</span>
+                                        <input type="number" formControlName="price" [(ngModel)]="item.price" matInput
+                                            readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div *ngFor="let item of motherBoardList">
+                                    <mat-form-field *ngIf="store.value.name === item.name">
+                                        <span matPrefix>$ &nbsp;</span>
+                                        <input type="number" formControlName="price" [(ngModel)]="item.price" matInput
+                                            readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div *ngFor="let item of videoCardList">
+                                    <mat-form-field *ngIf="store.value.name === item.name">
+                                        <span matPrefix>$ &nbsp;</span>
+                                        <input type="number" formControlName="price" [(ngModel)]="item.price" matInput
+                                            readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div *ngFor="let item of memoryList">
+                                    <mat-form-field *ngIf="store.value.name === item.name">
+                                        <span matPrefix>$ &nbsp;</span>
+                                        <input type="number" formControlName="price" [(ngModel)]="item.price" matInput
+                                            readonly>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-action">
+                            <mat-icon *ngIf="items.controls.length !== 1 || items.controls.length < 1" class="btn-act"
+                                color="warn" (click)="deleteSong(i)">
+                                <span class="material-icons">remove_circle</span>
+                            </mat-icon>
+                            <mat-icon class="btn-act" (click)="addSong()" color="primary">
+                                <span class="material-icons">add_circle</span>
+                            </mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="footer">
+            <div>
+                <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="updateOrderForm.invalid"
+                    (click)="submitUpdate()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
